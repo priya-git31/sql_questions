@@ -1,0 +1,4 @@
+-- For each coffee shop, find how its daily visitors compare to the average daily visitors of shops with the same rating.
+-- List each coffee shop along with a count of how many other shops have a lower rating.
+-- For each coffee shop, determine if its rating is higher than the average rating of shops in the same city (assuming we have a city column).
+-- Find coffee shops where the daily visitors exceed the average daily visitors of shops with higher ratings.
