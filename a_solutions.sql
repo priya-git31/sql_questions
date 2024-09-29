@@ -335,3 +335,8 @@ CASE
     END AS lenth_category
 FROM 
     Customers; 
+
+SELECT * 
+FROM customers 
+
+    jnsjhd
