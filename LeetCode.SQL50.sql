@@ -27,3 +27,10 @@ GROUP BY
      v.author_id 
 HAVING COUNT(v.author_id) >= 1
 ORDER BY 1
+
+--5  Write a solution to find the IDs of the invalid tweets. The tweet is invalid if the number of characters used in the content of the tweet is strictly greater than 15.
+SELECT 
+     tweet_id 
+FROM 
+     Tweets
+WHERE LENGTH(content) > 15
