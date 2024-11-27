@@ -8,6 +8,18 @@ FROM
 WHERE
      low_fats = 'Y' AND recyclable = 'Y'
 
+-- 2 Find the names of the customer that are not referred by the customer with id = 2.
+-- Return the result table in any order.
+
+SELECT 
+      name 
+FROM 
+     Customer
+WHERE 
+     referee_id != 2 OR  referee_id IS NULL
+
+
+
 --3  Write a solution to find the name, population, and area of the big countries.
 SELECT 
      name, 
@@ -34,3 +46,40 @@ SELECT
 FROM 
      Tweets
 WHERE LENGTH(content) > 15
+
+
+
+--#AGGREGATE FUNCTIONS
+
+-- 1 Write a solution to report the movies with an odd-numbered ID and a description that is not "boring".
+-- Return the result table ordered by rating in descending order.
+
+SELECT 
+     id, 
+     movie, 
+     description, 
+     rating 
+FROM
+    Cinema
+WHERE description != 'boring' AND id % 2 = 1
+ORDER BY rating DESC
+
+
+-- 3 Write an SQL query that reports the average experience years of all the employees for each project, rounded to 2 digits.
+SELECT 
+      p.project_id, 
+      ROUND(AVG(e.experience_years), 2) AS average_years
+FROM 
+    Project p JOIN Employee e ON p.employee_id = e.employee_id 
+GROUP BY 1 
+ORDER BY 1
+
+
+SELECT
+     DISTINCT(num) AS num
+FROM 
+     MyNumbers
+GROUP BY 1
+HAVING COUNT(*) = 1
+ORDER BY 1 DESC
+LIMIT 1
