@@ -116,3 +116,13 @@ SELECT
 FROM
     Employee e LEFT JOIN Bonus b ON e.empId = b.empID
 WHERE b.bonus < 1000 OR b.bonus IS NULL
+
+
+--## SORTING 
+
+SELECT 
+      class
+FROM
+     Courses 
+GROUP BY class 
+HAVING COUNT(DISTINCT student) >= 5
