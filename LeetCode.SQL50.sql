@@ -95,3 +95,24 @@ SELECT
      e.name
 FROM
      Employees e LEFT JOIN EmployeeUNI u ON e.id = u.id
+
+
+--2  Write a solution to report the product_name, year, and price for each sale_id in the Sales table.
+-- Return the resulting table in any order.
+
+SELECT 
+      p.product_name, 
+      s.year, 
+      s.price 
+FROM 
+     Sales s LEFT JOIN Product p ON s.product_id = p.product_id
+
+
+--6 Write a solution to report the name and bonus amount of each employee with a bonus less than 1000.
+-- Return the result table in any order.
+SELECT 
+     e.name, 
+     b.bonus 
+FROM
+    Employee e LEFT JOIN Bonus b ON e.empId = b.empID
+WHERE b.bonus < 1000 OR b.bonus IS NULL
