@@ -46,14 +46,44 @@ FROM
 WHERE view_date = '2025-01-01';
 
 5. Extract the day of the week for each view_date. 
+SELECT 
+      view_date, 
+      DAYOFWEEK(view_date) AS day_of_week 
+FROM  
+    hbo_max_data 
+
 
 6. Find all shows watched in the last week of January 2025. 
+SELECT * 
+FROM 
+    Hbo_max_data
+WHERE 
+    view_date BETWEEN '2025-01-25' AND '2025-01-31'
 
 7. List all records where the show was watched on a weekday. 
+SELECT * 
+FROM 
+    Hbo_max_data 
+WHERE DAYOFWEEK(view_date) BETWEEN (2,6)
 
 8. Get all records where the show was watched in the second week of January 2025. 
+SELECT * 
+FROM 
+    Hbo_max_data 
+WHERE view_date BETWEEN '2025-01-08' AND '2025-01-14'
 
 9. Find records for all shows watched on the same day by multiple users. 
+SELECT 
+      view_date, 
+      COUNT(*) AS user_count
+FROM   
+    Hbo_max_data 
+GROUP BY view_date 
+HAVING COUNT(DISTINCT user_count) > 1 
 
 10. Retrieve records for all shows watched during weekdays only in January 2025. 
- 
+SELECT * 
+FROM 
+    Hbo_max_data 
+WHERE 
+    MONTH(view_date) = 1 AND YEAR(view_date) = 2025 AND DAYOFWEEK(view_Date) BETWEEN (2,6)
