@@ -121,14 +121,43 @@ WHERE
 GROUP BY user_id 
 
 
-
 14. Retrieve the average watch time per week for all users. 
+SELECT 
+      WEEK(view_date) AS week 
+      SEC_TO_TIME(avg(TIME_TO_SEC(watch_time)) AS avg_watch_time 
+FROM   
+    Hbo_max_data 
+GROUP BY WEEK(view_date)
 
 15. List users who watched a show every day in a specific week of January 2025. 
+SELECT 
+     user_id 
+FROM   
+    Hbo_max_data 
+WHERE 
+     WEEK(view_date) = 2 AND MONTH(view_date) = 1 AND YEAR(view_date) = 2025 
+GROUP BY user_id 
+HAVING COUNT(DISTINCT view_date) = 7  
+
 
 16. Identify users who were active for at least 3 days in a specific week. 
+SELECT 
+      user_id 
+FROM  
+    Hbo_max_data 
+WHERE 
+    WEEK(view_date) = 3 AND MONTH(view_date) = 1 AND YEAR(view_date) = 2025
+GROUP BY user_id 
+HAVING COUNT(DISTINCT view_date) >= 3 
 
 17. Find the average watch time per day for each user. 
+SELECT 
+     user_id, 
+     SEC_TO_TIME(avg(TIME_TO_SEC(watch_time)) AS avg_watch_time 
+FROM  
+    Hbo_max_data 
+GROUP BY view_date, user_id 
+
 
 18. Calculate the total watch time for all users in the third week of January 2025. 
 
