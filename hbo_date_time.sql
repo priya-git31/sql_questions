@@ -110,8 +110,17 @@ WHERE MONTH(view_date) = 1 AND YEAR(view_date) = 2025
 GROUP BY view_date
 
 
-
 13. Find the total watch time for each user during weekends in January 2025. 
+SELECT  
+      user_id, 
+      SEC_TO_TIME(SUM(TIME_TO_SEC(watch_time))) AS total_watch_time 
+FROM  
+    Hbo_max_data 
+WHERE 
+    MONTH(view_date) = 1 AND YEAR(view_date) = 2025 AND DAY(view_date) BETWEEN (1,7)
+GROUP BY user_id 
+
+
 
 14. Retrieve the average watch time per week for all users. 
 
