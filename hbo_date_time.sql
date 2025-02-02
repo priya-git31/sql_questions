@@ -160,7 +160,30 @@ GROUP BY view_date, user_id
 
 
 18. Calculate the total watch time for all users in the third week of January 2025. 
+SELECT 
+     SEC_TO_TIME(SUM(TIME_TO_SEC(watch_time)) AS avg_watch_time
+FROM 
+    Hbo_max_data 
+WHERE 
+    MONTH(view_date) = 1 AND YEAR(view_date) = 2025 AND WEEK(view_date) = 3
+
 
 19. List all shows watched by users on the same weekday across multiple weeks. 
-
+SELECT 
+      DAYNAME(view_date) AS weekday, 
+      show_name, 
+      COUNT(*) AS times_watched 
+FROM 
+    Hbo_max_data 
+GROUP BY 
+    DAYNAME(view_date), 
+    show_name
+HAVING COUNT(*) > 1
+     
 20. Retrieve all users who watched shows only during weekdays in a specific week. 
+SELECT 
+     DISTINCT user_id 
+FROM 
+    Hbo_max_data 
+WHERE WEEK(view_date) = 2 AND MONTH(view_date) = 1 AND YEAR(view_date) = 2025 AND 
+DAYOFWEEK(view_date) BETWEEN (2,6)
