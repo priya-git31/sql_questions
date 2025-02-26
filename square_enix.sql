@@ -158,3 +158,6 @@ SELECT title,
 FROM CTE 
 WHERE rank = 1
 ORDER BY total_sales DESC
+
+
+───────────+───────+
