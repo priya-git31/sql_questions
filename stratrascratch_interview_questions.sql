@@ -548,3 +548,179 @@ FROM
     worker
 GROUP BY department 
 ORDER BY total_salary DESC
+
+46. 
+ID 9664
+-- Finding the highest market value for each sector. Which sector is it best to invest in?
+-- Output the result along with the sector name. 
+-- Order the result based on the highest market value in descending order.
+SELECT 
+     sector, 
+     MAX(marketvalue) AS max_marketvalue 
+FROM
+    forbes_global_2010_2014
+GROUP BY 
+     sector 
+ORDER BY max_marketvalue DESC
+
+47. 
+-- ID 9665
+-- Count the number of companies in the Information Technology sector in each country.
+-- Output the result along with the corresponding country name.
+-- Order the result based on the number of companies in the descending order.
+SELECT 
+     country, 
+     COUNT(DISTINCT company) AS n_companies 
+FROM 
+     forbes_global_2010_2014
+WHERE sector = 'Information Technology'
+GROUP BY country 
+ORDER BY n_companies DESC
+
+48. 
+-- ID 9667
+-- How many users speak English, German, French or Spanish?
+-- Note: Users who speak more than one language are counted only once.
+SELECT 
+     COUNT( DISTINCT user_id) AS n_wanted_speakers 
+FROM 
+    playbook_users
+WHERE language IN ('French', 'Spanish', 'English', 'German')
+
+49. 
+-- ID 9672
+-- Find how many different origin airports exist?
+SELECT 
+     COUNT(DISTINCT origin) AS n_origin_airports 
+FROM 
+    us_flights
+
+
+50. 
+-- ID 9673
+-- What are the unique airport codes for all origin airports in the dataset? (e.g., LAX, JFK, SFO)
+SELECT 
+     DISTINCT(origin)
+FROM 
+    us_flights
+
+51.
+-- ID 9774
+-- Find the maximum step reached for every feature.
+Output the feature id along with its maximum step.
+SELECT 
+     feature_id, 
+     MAX(step_reached) AS max_step_reached 
+FROM 
+    facebook_product_features_realizations
+GROUP BY feature_id 
+ORDER BY max_step_reached
+
+52. 
+-- ID 9788
+-- Find the total number of interactions on days 0 and 2.
+-- Output the result alongside the day.
+SELECT 
+     day, 
+     COUNT(*) AS n_interactions 
+FROM 
+    facebook_user_interactions
+WHERE day = 0 OR day = 2
+GROUP BY day
+
+53. 
+-- ID 9807
+-- Find all companies with more than 10 employees. Output all columns.
+
+SELECT 
+     * 
+FROM
+    google_adwords_earnings
+WHERE 
+     n_employees > 10
+
+
+54. 
+-- ID 9808
+-- Find business types present in the dataset.
+SELECT 
+     DISTINCT(business_type)
+FROM
+    google_adwords_earnings
+
+55.
+-- ID 9843
+-- Find all workers whose salary lies between 100,000 and 500,000 inclusive.
+SELECT * 
+FROM worker
+WHERE salary BETWEEN '100000' AND '500000'
+
+56. 
+-- ID 9844
+-- Find all workers who joined on February 2014.
+SELECT * 
+FROM 
+    worker 
+WHERE MONTH(joining_date) = 02 AND YEAR(joining_date) = '2014'
+
+
+57. 
+-- ID 9906
+-- Find the number of employees in each department.
+-- Output the department name along with the corresponding number of employees.
+-- Sort records based on the number of employees in descending order.
+SELECT 
+     department, 
+     COUNT(DISTINCT id) AS n_employees 
+FROM 
+    employee
+GROUP BY department
+
+58.
+-- ID 9911
+-- Find departments with at more than or equal 5 employees.
+-- SELECT 
+     department 
+FROM 
+    employee 
+GROUP BY department 
+HAVING COUNT(DISTINCT id) >= 5
+
+
+59.
+-- ID 9920
+-- Find employees in the Sales department who achieved a target greater than 150.
+-- Output first names of employees.
+-- Sort records by the first name in descending order.
+SELECT 
+     first_name 
+FROM 
+    employee
+WHERE department = 'Sales' AND target > 150 
+ORDER BY first_name DESC
+
+60. 
+-- ID 9923
+-- Find the number of libraries that had 100 or more of total checkouts in February 2015. 
+-- Be aware that there could be more than one row for certain library on monthly basis.
+SELECT 
+     COUNT(DISTINCT home_library_code) AS n_libray 
+FROM 
+     library_usage
+WHERE 
+     total_checkouts >= 100 AND circulation_active_year = 2015 AND circulation_active_month = 'February'
+
+61. 
+
+
+
+
+
+
+
+
+
+
+
+
+
