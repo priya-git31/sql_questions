@@ -843,6 +843,136 @@ GROUP BY day_of_week
 ORDER BY n_occurences DESC
 
 
+71. 
+-- ID 10153
+-- Find the number of Yelp businesses that sell pizza.
+SELECT 
+     COUNT(*)
+FROM 
+    yelp_business 
+WHERE 
+    categories LIKE '%pizza%'
+
+
+72. 
+-- ID 10160
+-- Rank guests based on their ages.
+-- Output the guest id along with the corresponding rank.
+-- Order records by the age in descending order.
+
+WITH CTE AS (
+SELECT 
+     guest_id, 
+     RANK() OVER (ORDER BY age DESC) AS 'rank'
+FROM 
+    airbnb_guests
+)
+SELECT * 
+FROM CTE
+
+
+73. 
+-- ID 10122
+-- Find the total number of searches for houses in Westlake neighborhood with a TV among the amenities.
+SELECT 
+     COUNT(*) AS n_searches 
+FROM 
+    airbnb_search_details
+WHERE neighbourhood = 'Westlake' AND amenities LIKE '%TV%'
+
+74. 
+-- ID 10022
+-- Find all wine varieties which can be considered cheap based on the price.
+-- A variety is considered cheap if the price of a bottle lies between 5 to 20 USD.
+-- Output unique variety names only.
+
+SELECT 
+     DISTINCT variety 
+FROM 
+    winemag_p1
+WHERE price BETWEEN 5 AND 20
+
+
+75. 
+ID 10022
+-- Find all wine varieties which can be considered cheap based on the price.
+-- A variety is considered cheap if the price of a bottle lies between 5 to 20 USD.
+-- Output unique variety names only.
+SELECT 
+     COUNT(DISTINCT winery) AS n_wineries 
+FROM 
+    winemag_p1
+WHERE 
+     country = 'US' AND price >=  200
+
+76
+-- ID 10054
+-- Find the number of entries per star.
+-- Output each number of stars along with the corresponding number of entries.
+-- Order records by stars in ascending order.
+SELECT 
+     stars, 
+     COUNT(DISTINCT user_id) AS n_entries 
+FROM 
+    yelp_reviews
+GROUP BY stars
+ORDER BY n_entries DESC
+
+
+77. 
+-- ID 10055
+-- Find records with the value '?' in the stars column.
+SELECT *
+FROM yelp_reviews
+WHERE stars LIKE '%?%'
+
+78. 
+-- ID 9990
+-- Find songs that have more than 3 million streams.
+-- Output the track name, artist, and the corresponding streams.
+-- Sort records based on streams in descending order.
+SELECT 
+    trackname, 
+    artist,
+    streams 
+FROM 
+    spotify_worldwide_daily_song_ranking
+WHERE streams > 3000000
+ORDER BY streams DESC
+
+
+79. 
+-- ID 9994
+-- Find songs with less than 2000 streams.
+-- Output the track name along with the corresponding streams.
+-- Sort records by streams in descending order.
+-- There is no need to group rows with same track name
+
+SELECT 
+     trackname,
+     streams 
+FROM 
+    spotify_worldwide_daily_song_ranking
+WHERE 
+    streams < 2000
+ORDER BY 
+     streams DESC
+
+
+80. 
+-- Find the number of reviews received by Lo-Lo's Chicken & Waffles for each star.
+-- Output the number of stars along with the corresponding number of reviews.
+-- Sort records by stars in ascending order.
+SELECT 
+     stars, 
+     COUNT(review_id) AS n_reviews 
+FROM
+    yelp_reviews
+WHERE 
+     business_name LIKE 'Lo-Lo\'s Chicken & Waffles'
+GROUP BY stars 
+ORDER BY n_reviews
+
 
 
 
