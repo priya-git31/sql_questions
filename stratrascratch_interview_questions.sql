@@ -710,7 +710,142 @@ FROM
 WHERE 
      total_checkouts >= 100 AND circulation_active_year = 2015 AND circulation_active_month = 'February'
 
-61. 
+-- 61. ID 9674
+-- Find the top 5 longest US flights by distance.
+-- Output the result along with the corresponding origin, destination, and distance.
+-- Sort the flights from longest to shortest.
+SELECT 
+     origin, 
+     dest, 
+     MAX(distance) AS longest_distance 
+FROM 
+    us_flights
+GROUP BY origin, dest
+ORDER BY longest_distance DESC
+LIMIT 5 
+
+
+62. 
+-- ID 9676
+-- Find the average distance an airplane travels from each origin airport.
+-- Output the result along with the corresponding origin.
+SELECT 
+      origin, 
+      AVG(distance) AS avg_distance
+FROM
+    us_flights 
+GROUP BY origin 
+ORDER BY avg_distance DESC
+
+63. 
+-- ID 9704
+-- Find the number of inspections per day.
+-- Output the result along with the date of the activity.
+-- Order results based on the activity date in the ascending order.
+SELECT 
+      activity_date, 
+      COUNT(*) AS n_inspections 
+FROM 
+    los_angeles_restaurant_health_inspections
+GROUP BY activity_date 
+ORDER BY n_inspections DESC
+
+64. 
+ID 9702
+-- Count the number of unique facilities per municipality zip code along with the number of inspections.
+-- Output the result along with the number of inspections per each municipality zip code. 
+-- Sort the result based on the number of inspections in descending order.
+
+SELECT 
+     facility_zip, 
+     COUNT(DISTINCT facility_id) AS no_facilities, 
+     COUNT(*) AS no_inspections 
+FROM
+    los_angeles_restaurant_health_inspections
+GROUP BY facility_zip 
+ORDER BY no_inspections DESC
+
+65 
+-- ID 9719
+-- Find all business postal codes of restaurants with issues related to the water (violation description contains substring "water").
+
+SELECT 
+    DISTINCT  business_postal_code
+FROM
+    sf_restaurant_health_violations
+WHERE
+     violation_description LIKE '%water%'
+
+
+66. 
+-- ID 9720
+-- Find the business names that scored less than 50 in inspections.
+-- Output the result along with the corresponding inspection date and the score.
+
+SELECT 
+     DISTINCT business_name, 
+     inspection_date, 
+     inspection_score 
+FROM 
+     sf_restaurant_health_violations
+WHERE 
+     inspection_score < 50 
+
+
+67. 
+-- ID 9861
+-- Find the number of employees in each department.
+-- Output the department name along with the corresponding number of employees.
+SELECT 
+     department, 
+     COUNT(DISTINCT worker_id) AS no_employees 
+FROM 
+    worker 
+GROUP BY department 
+ORDER BY no_employees DESC
+
+
+68. 
+ID 9975
+-- Find all employees with a job title that contains 'METROPOLITAN TRANSIT AUTHORITY' 
+-- and output the employee's name along with the corresponding total pay with benefits.
+SELECT 
+     employeename, 
+     totalpaybenefits
+FROM 
+    sf_public_salaries
+WHERE jobtitle LIKE '%METROPOLITAN TRANSIT AUTHORITY%'
+
+
+69. 
+-- ID 10164
+-- Find the total AdWords earnings for each business type. 
+-- Output the business types along with the total earnings.
+
+SELECT 
+     business_type, 
+     SUM(adwords_earnings) AS earnings 
+FROM 
+    google_adwords_earnings
+GROUP BY business_type 
+ORDER BY earnings DESC
+
+70. 
+-- ID 10132
+-- Find the number of crime occurrences for each day of the week.
+-- Output the day alongside the corresponding crime count.
+SELECT 
+     day_of_week, 
+     COUNT(*) AS n_occurences 
+FROM 
+    sf_crime_incidents_2014_01
+GROUP BY day_of_week 
+ORDER BY n_occurences DESC
+
+
+
+
+
 
 
 
