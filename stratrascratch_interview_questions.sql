@@ -1219,6 +1219,107 @@ bonus
 from employee
 where bonus < 150
 
+101. 
+Find how many people registered in libraries in the year 2016.
+Output the total patrons. Keep in mind that each row represents different patron.
+SELECT 
+COUNT(*) AS titak_patrons
+FROM 
+library_usage
+WHERE year_patron_registered= '2016'
+
+
+102. 
+-- ID 9933
+-- Find all Danish athletes who won a medal.
+-- Output unique names only.
+select 
+distinct(name)
+from olympics_athletes_events
+where medal is not null and team like '%Denmark%'
+
+103. 
+-- ID 9935
+-- Find all events participated by Christine Jacoba Aaftink.
+-- Output unique values only.
+
+select 
+distinct event
+from olympics_athletes_events
+where name = 'Christine Jacoba Aaftink'
+
+104. 
+-- ID 10000
+-- Find the year that Uber acquired more than 2000 customers through advertising using celebrities.
+select 
+year 
+from 
+uber_advertising
+where advertising_channel = 'celebrities' and customers_acquired > 2000
+
+105. 
+ID 10002
+Find the advertising channel(s) where Uber spent more than 100k USD in 2019.
+select 
+advertising_channel 
+from uber_advertising
+where year = '2019' and money_spent > 100000
+
+106. 
+ID 9931
+Find the number of patrons who renewed books at least once but less than 10 times in April 2015. Each row is an unique patron.
+select 
+count(*) AS n_patrons 
+from library_usage
+where total_renewals between 1 and 9 and circulation_active_month = 'April' and circulation_active_year = '2016'
+
+
+107. 
+-- ID 9932
+-- Find unique names women who participated in an Olympics before World War 2. 
+-- Let's consider the year 1939 as the start of WW2.
+select 
+distinct name 
+from olympics_athletes_events
+where 
+year < '1939' and sex = 'F'
+
+108. 
+-- ID 9936
+-- Find all minor that participated in Olympics games.
+-- A player is considered as a minor if he or she is 18 or less years old.
+-- Output the name and age of the player along with participated Olympic games (ex: 1992 Summer).
+
+select 
+name, 
+age, 
+games
+from olympics_athletes_events
+where age <= 18
+
+109. 
+-- ID 9937
+-- Find all athletes who were older than 40 years when they won either Bronze or Silver medals.
+select 
+distinct name 
+from olympics_athletes_events
+where age > 40 and medal in ('Silver', 'Bronze')
+
+110. 
+ID 2013
+How many customers placed an order and what is the average order amount?
+select 
+count(distinct customer_id), 
+avg(amount)
+from
+postmates_orders
+
+
+
+
+
+
+
 
 
 
