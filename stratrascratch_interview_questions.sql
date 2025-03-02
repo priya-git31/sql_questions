@@ -960,18 +960,270 @@ ORDER BY
 
 
 80. 
--- Find the number of reviews received by Lo-Lo's Chicken & Waffles for each star.
--- Output the number of stars along with the corresponding number of reviews.
--- Sort records by stars in ascending order.
+-- ID 9728
+-- You are given a dataset of health inspections that includes details about violations. 
+-- Each row represents an inspection, and if an inspection resulted in a violation, the violation_id column will contain a value.
+-- Count the total number of violations that occurred at 'Roxanne Cafe' for each year, based on the inspection date.
+-- Output the year and the corresponding number of violations in ascending order of the year.
+
 SELECT 
-     stars, 
-     COUNT(review_id) AS n_reviews 
+     YEAR(inspection_date) AS inspection_year, 
+     COUNT(violation_id) AS n_violations 
 FROM
-    yelp_reviews
+    sf_restaurant_health_violations
 WHERE 
-     business_name LIKE 'Lo-Lo\'s Chicken & Waffles'
-GROUP BY stars 
-ORDER BY n_reviews
+     business_name = 'Roxanne Cafe'
+GROUP BY YEAR(inspection_date)
+ORDER BY n_violations DESC
+
+
+81. 
+-- ID 9770
+-- Find the number of views each post has.
+-- Output the post id along with the number of views.
+-- Order records by post id in ascending order.
+
+SELECT 
+     post_id, 
+     COUNT(*) AS n_views 
+FROM 
+    facebook_post_views
+GROUP BY post_id
+ORDER BY n_views DESC
+
+
+82. 
+-- ID 9771
+-- Find all actions which occurred more than once in the weblog.
+
+SELECT 
+     action
+FROM 
+    facebook_web_log
+GROUP BY action
+HAVING COUNT(*) > 1
+
+83. 
+-- ID 9871
+-- List all hotels with their total number of reviews. 
+-- Show the results sorted by the number of reviews from highest to lowest and output the hotel name along with the reviews.
+
+SELECT 
+hotel_name, 
+total_number_of_reviews
+FROM 
+hotel_reviews
+GROUP BY hotel_name 
+ORDER BY total_number_of_reviews DESC
+
+84.
+ID 9930
+Find and rank libraries by their total renewals. 
+Output the home library definition and its corresponding total number of renewals. 
+Sort the results in descending order by total renewals.
+WITH CTE AS(
+SELECT 
+     home_library_definition, 
+     SUM(total_renewals) AS total_lib_renewals, 
+     RANK() OVER (ORDER BY SUM(total_renewals) DESC) AS rnk 
+FROM 
+    library_usage
+GROUP BY home_library_definition
+)
+SELECT 
+total_lib_renewals, 
+home_library_definition
+FROM 
+CTE
+
+
+85. 
+-- ID 9707
+-- Find the mean of inspections scores between 91 and 100.
+-- Assuming that the scores are normally distributed.
+SELECT 
+     AVG(score) AS avg_score 
+FROM 
+    los_angeles_restaurant_health_inspections
+WHERE 
+     score BETWEEN '91' AND '100'
+
+
+86. 
+ID 9717
+-- Find all businesses which have low-risk safety violations.
+SELECT 
+DISTINCT business_name 
+FROM 
+sf_restaurant_health_violations
+WHERE 
+risk_category LIKE '%LOW%'
+
+87. 
+ID 9718
+-- Find all businesses which have a phone number.
+SELECT 
+DISTINCT business_name 
+FROM 
+sf_restaurant_health_violations
+WHERE business_phone_number IS NOT NULL
+
+
+88. 
+-- ID 9721
+-- Find all inspections made on restaurants and output the business name and the inspection score. 
+-- For this question business is considered as a restaurant if it contains string "restaurant" inside its name.
+SELECT 
+DISTINCT business_name, 
+inspection_score 
+FROM 
+sf_restaurant_health_violations
+WHERE business_name LIKE '%restaurant%'
+
+89. 
+ID 9943
+-- Find the lowest, average, and the highest ages of athletes across all Olympics. 
+-- HINT: If athlete participated in more than one discipline at one Olympic games, consider it as a separate athlete, 
+-- no need to remove such edge cases.
+
+SELECT 
+MIN(age) AS lowest_age, 
+AVG(age) AS mean_age, 
+MAX(age) AS highest_age
+FROM
+olympics_athletes_events
+
+90. 
+ID 9974
+Find benefits that people with the name 'Patrick' have.
+Output the full employee name along with the corresponding benefits.
+SELECT 
+employeename, 
+benefits 
+FROM 
+sf_public_salaries
+WHERE employeename LIKE '%PATRICK%'
+
+
+91.
+-- ID 9766
+-- Find the complaint id for the processed complaints of type 1.
+SELECT 
+DISTINCT complaint_id
+FROM 
+facebook_complaints
+WHERE 
+type = 1 AND processed = TRUE
+
+-- 92. 
+-- ID 9682
+-- Find all industries with a positive average profit. For those industries extract their lowest sale.
+-- Output the industry along with the corresponding lowest sale and average profit.
+-- Sort the output based on the lowest sales in ascending order.
+
+select 
+industry, 
+min(sales) AS min_sales, 
+avg(profits) AS avg_profit 
+from 
+forbes_global_2010_2014
+group by industry 
+having avg(profits) > 0 
+
+93. 
+-- How many athletes were drafted into NFL from 2013 NFL Combine? 
+-- The pickround column specifies if the athlete was drafted into the NFL.
+-- A value of 0 means that the athlete was not drafted into the NFL.
+select 
+count(pickround) AS n_athletes
+from 
+nfl_combine
+where year = 2013 AND pickround != 0
+
+
+94. 
+ID 9687
+Find the details of oscar winners between 2001 and 2009.
+select * 
+from 
+oscar_nominees
+where year between 2001 and 2009 and winner = 1
+
+95. 
+-- ID 9697
+-- Find the owner_name and the pe_description of facilities owned by 'BAKERY' where low-risk cases have been reported.
+select 
+DISTINCT owner_name, 
+pe_description 
+from 
+los_angeles_restaurant_health_inspections
+where 
+owner_name like '%BAKERY%'
+
+96. 
+-- ID 9768
+-- Find all posts with a keyword that contains 'nba' substring. For such rows output all columns.
+select * 
+from facebook_posts 
+where post_keywords like '%nba%'
+
+97. 
+ID 2142
+-- You've been asked by Amazon to find the shipment_id and weight of the third heaviest shipment.
+-- Output the shipment_id, and total_weight for that shipment_id.
+-- In the event of a tie, do not skip ranks.
+with cte as (
+select 
+shipment_id, 
+sum(weight) AS total_weight, 
+dense_rank() over (order by sum(weight) desc) as rnk
+from 
+amazon_shipment
+group by shipment_id
+)
+select
+shipment_id, 
+total_weight 
+from 
+cte 
+where rnk = 3
+
+98. 
+-- ID 9693
+-- Find the average score for grades A, B, and C.
+-- Output the results along with the corresponding grade (ex: 'A', avg(score)).
+select 
+grade, 
+avg(score) AS avg_score
+from los_angeles_restaurant_health_inspections
+group by grade 
+
+99. 
+ID 9867
+-- You have been asked to find the three lowest distinct salaries. 
+-- For example, if two people earn the same amount of money, they are counted as one.
+select 
+distinct salary 
+from 
+worker 
+order by salary asc 
+limit 3
+
+100. 
+-- ID 9903
+-- Find employees whose bonus is less than $150.
+-- Output the first name along with the corresponding bonus.
+select 
+first_name, 
+bonus
+from employee
+where bonus < 150
+
+
+
+
+
+
 
 
 
