@@ -1314,6 +1314,182 @@ avg(amount)
 from
 postmates_orders
 
+111. 
+ID 9996
+Find the average number of streams across all songs.
+select 
+avg(streams) as avg_stremas 
+from spotify_worldwide_daily_song_ranking
+
+
+112. 
+-- ID 9884
+-- Find the team division of each player.
+-- Output the player name along with the corresponding team division.
+select 
+p.player_name, 
+t.division
+from college_football_players p JOIN college_football_teams t ON t.school_name = p.school_name
+
+113. 
+-- ID 9834
+-- Combine the first and last names of workers with a space in-between in a column 'full_name'.
+select 
+CONCAT(first_name, ' ', last_name) AS full_name
+from worker;
+
+114. 
+-- ID 9831
+-- Print the first name after removing white spaces from the left side.
+select 
+LTRIM(first_name) AS first_name_trim
+from worker_ws;
+
+115. 
+-- ID 9830
+-- Print the first name after removing white spaces from the right side.
+select 
+RTRIM(first_name) AS first_name_trim
+from worker_ws;
+
+116. 
+-- ID 9828
+-- Print the first three characters of the first name.
+select 
+SUBSTRING(first_name, 1, 3)
+from worker;
+
+117. 
+-- ID 2166
+-- You've been asked to arrange a column of random IDs in ascending alphabetical order based on their second character.
+select 
+id
+from random_id
+order by substring(id,2,1), id; 
+
+118. 
+-- ID 9840
+-- Find all workers whose first name contains the letter 'a'. Output all columns for such workers.
+select * 
+from worker
+where first_name like '%a%'
+
+
+119. 
+-- ID 9842
+-- Find all workers whose first name contains 6 letters and also ends with the letter 'h'.
+-- Display all information about the workers in output.
+
+select *
+from worker
+where first_name like '_____h'
+
+
+120. 
+-- ID 9841
+-- Find all workers whose first name ends with the letter 'a'.
+select * 
+from worker
+where first_name like '%a'
+
+
+121. 
+-- ID 9836
+-- Sort workers in ascending order by the first name and then in descending order by department name.
+select *
+from worker
+order by first_name asc, department desc
+
+122. 
+-- ID 10540
+-- Calculate the average score for each project, but only include projects where more than one team member has provided a score.
+-- Your output should include the project ID and the calculated average score for each qualifying project.
+
+select 
+project_id, 
+avg(score)
+from project_data
+group by project_id 
+having count(score) > 1
+
+123. 
+-- ID 9617
+-- Find all searches for accommodations where the number of bedrooms is equal to the number of bathrooms.
+select *
+from airbnb_search_details
+where bedrooms = bathrooms
+
+124. 
+-- ID 9615
+-- Find the search details for apartments where the property type is Apartment and the accommodation is suitable for one person.
+
+select *
+from airbnb_search_details
+where property_type = 'Apartment' AND accommodates = 1
+
+125. 
+-- ID 9690
+-- Find all routine inspections where high-risks issues were found.
+
+select *
+from los_angeles_restaurant_health_inspections
+where service_description = 'ROUTINE INSPECTION' and pe_description LIKE '%HIGH RISK%'
+
+126. 
+-- ID 9846
+-- Find the full name of workers whose salaries range from 50,000 to 100,000 inclusive.
+-- Output the worker's first name and last name in one column along with their salaries.
+with cte as (
+SELECT 
+    CONCAT(first_name, ' ', last_name ) AS employee_name, 
+    salary, 
+    dense_rank() over (order by salary desc) as rnk
+FROM 
+    worker
+)
+select employee_name, 
+salary
+from cte
+where rnk = 1
+
+
+127. 
+-- ID 9988
+-- Get the job titles of the 3 employees who received the most overtime pay
+-- Output the job title of selected records.
+
+with cte as(
+select 
+jobtitle, 
+overtimepay, 
+dense_rank() over (order by overtimepay desc) as rnk 
+from 
+sf_public_salaries
+)
+select 
+jobtitle 
+from 
+cte
+where rnk <= 3
+
+128. 
+-- ID 2083
+-- Count how many claims submitted in December 2021 are still pending.
+-- A claim is pending when it has neither an acceptance nor rejection date.
+
+select 
+count(*) as n_cliams 
+from 
+cvs_claims
+where YEAR(date_submitted) = '2021' AND MONTH(date_submitted) = '12' AND 
+date_accepted IS NULL and date_rejected IS NULL
+
+
+
+
+
+
+
 
 
 
