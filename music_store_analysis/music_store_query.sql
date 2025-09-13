@@ -101,3 +101,61 @@ milliseconds
 from track 
 where milliseconds > (Select avg(milliseconds) as avg_track_length from track)
 order by milliseconds desc ;
+
+
+-- Q4. Top Customers by Spending
+-- Find the top 5 customers who spent the most (total invoice amount). 
+-- Show their first_name, last_name, country, and total spent.
+
+select 
+customer.first_name, 
+customer.last_name, 
+customer.country,
+sum(invoice.total) as total_spent 
+from 
+Invoice 
+join customer on invoice.customer_id = customer.customer_id 
+group by customer.first_name, customer.last_name, customer.country
+order by total_spent desc 
+limit 5; 
+
+-- Top Artists by Sales
+-- Find the top 10 artists whose tracks generated the most sales revenue. Show artist name and total_sales.
+select 
+artist.name, 
+sum(invoice_line.unit_price * invoice_line.quantity) as total_sales 
+from 
+artist 
+join album on artist.artist_id = album.artist_id 
+join track on album.album_id = track.album_id
+join invoice_line on track.track_id = invoice_line.track_id 
+join invoice on invoice_line.invoice_id = invoice.invoice_id 
+group by artist.name
+order by total_sales DESC
+limit 10;
+
+
+-- - Average Track Length by Genre
+-- Find the average track length (in seconds) per genre, sorted from longest to shortest. 
+-- Show genre and avg_length_seconds.
+
+SELECT
+  g.name AS genre,
+  ROUND(AVG(t.milliseconds) / 1000.0, 2) AS avg_length_seconds
+FROM track t
+JOIN genre g ON g.genre_id = t.genre_id
+GROUP BY g.genre_id, g.name
+ORDER BY avg_length_seconds DESC;
+
+-- Employee–Customer Relationship
+-- Each customer is assigned to a support rep (an employee). 
+-- Find each employee’s full name and how many customers they support.
+
+select 
+concat(employee.first_name || ' ' ||employee.last_name) as full_name,
+count(*) as total_customers 
+from 
+employee 
+join customer on employee.employee_id = customer.support_rep_id
+group by full_name 
+order by total_customers desc, full_name;
