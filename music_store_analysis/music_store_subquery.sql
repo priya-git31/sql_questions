@@ -110,3 +110,82 @@ from
 employee e 
 left join customer c on e.employee_id = c.support_rep_id
 group by e.first_name, e.last_name;
+
+-----IN/NOT IN SUB QUERIES---
+
+-- Q1. Customers who bought Rock tracks
+-- Find the customer IDs and names of customers who have purchased at least one track in the Rock genre.
+
+select 
+c.customer_id, 
+c.first_name, 
+c.last_name
+from customer c 
+where c.customer_id in (
+select 
+distinct cust.customer_id
+from customer cust
+join invoice i on cust.customer_id = i.customer_id 
+join invoice_line il2 on i.invoice_id = il2.invoice_id 
+join track tck on il2.track_id = tck.track_id 
+join genre gen on tck.genre_id = gen.genre_id
+where gen.name like '%rock%');
+
+-- Q2. Tracks from AC/DC albums
+-- List the track names that belong to albums created by AC/DC.
+select t.name as track_names 
+from 
+track t
+where t.album_id in 
+(select 
+alb.album_id
+FROM  album alb 
+JOIN artist art on alb.artist_id = art.artist_id
+WHERE art.name like '%Ac/Dc%');
+
+-- Q3. Employees who have no customers
+-- Show the employee names of support reps who do not support any customers.
+
+select 
+e.employee_id,
+e.first_name,
+e.last_name 
+from 
+employee e 
+where e.employee_id not in (
+select 
+distinct cust.support_rep_id 
+from 
+customer cust
+where cust.support_rep_id is not null
+);
+
+
+- Q2. Tracks never purchased (NOT EXISTS)
+-- 👉 List the track_id and track name of tracks that have never been purchased (no matching row in invoice_line).
+
+select 
+t.track_id, 
+t.name, 
+from track t 
+where not exists (
+select 1 
+from 
+invoice_line in
+where in.track_id = t.track_id);
+
+
+-- Q3. Employees with no customers (NOT EXISTS)
+-- 👉 Show the first and last names of employees who do not support any customers.
+
+
+select 
+e.first_name,
+e.last_name 
+from employee e
+where not exists (
+SELECT 
+c.support_rep_id
+FROM 
+customer c 
+where c.support_rep_id = e.employee_id );
