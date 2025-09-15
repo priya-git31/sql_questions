@@ -189,3 +189,55 @@ c.support_rep_id
 FROM 
 customer c 
 where c.support_rep_id = e.employee_id );
+
+
+-- Q1. Top-Spending Customers vs Average
+-- Find customers (first name, last name, total spent) whose total spending
+--  is greater than the average total spending across all customers.
+
+
+select 
+cu.first_name, 
+cu.last_name, 
+sum(inl.quantity * inl.unit_price) as total_sum 
+from 
+customer cu 
+join invoice inv on cu.customer_id = inv.customer_id 
+join invoice_line inl on inv.invoice_id = inl.invoice_id 
+group by cu.customer_id, cu.first_name, cu.last_name 
+having total_sum > (select round(avg(total_amount),2)  as avg_amount_customer
+from (
+select 
+c.customer_id,
+sum(il.quantity * il.unit_price) as total_amount
+from 
+customer c 
+join invoice i on c.customer_id = i.customer_id 
+join invoice_line il on i.invoice_id = il.invoice_id 
+group by c.customer_id));
+
+
+-- Q4. Genres with Above-Average Revenue
+-- Show genres (name, revenue) where total revenue is greater than the average genre revenue.
+
+
+select 
+gen.name, 
+sum(invl.quantity * invl.unit_price) as total_revenue 
+from 
+invoice_line invl 
+join track tk on invl.track_id = tk.track_id 
+join genre gen on gen.genre_id = tk.genre_id 
+group by gen.name, gen.genre_id 
+having sum(invl.quantity * invl.unit_price)  >  (select round(avg(total_sum),2)
+from
+(select 
+g.name, 
+g.genre_id, 
+sum(il.quantity * il.unit_price) as total_sum 
+from 
+invoice_line il
+join track t on il.track_id = t.track_id 
+join genre g on g.genre_id = t.genre_id
+group by g.name, g.genre_id));
+
