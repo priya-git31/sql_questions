@@ -241,3 +241,40 @@ join track t on il.track_id = t.track_id
 join genre g on g.genre_id = t.genre_id
 group by g.name, g.genre_id));
 
+---CORELATED SUB QUERY----
+
+-- Q1. Invoice above customer’s average
+-- For each invoice, show invoice_id, customer_id, 
+-- and total only if the total is greater than the average invoice total for that same customer
+
+SELECT 
+i.invoice_id, 
+i.customer_id, 
+i.total 
+FROM
+invoice i 
+WHERE i.total > (
+      SELECT AVG(i2.total)
+      FROM invoice i2 
+      WHERE i2.customer_id = i.customer_id
+);
+
+
+-- Q3. Customers with more invoices than average in their country
+-- Show customer names and invoice counts for customers whose number of invoices is
+--  greater than the average invoice count for customers in the same country.
+
+SELECT 
+c.first_name, 
+count(in.invoice_id) as invoice_counts 
+from 
+customer c 
+join invoice in on c.customer_id = in.customer_id 
+group by c.first_name 
+having count(in.invoice_id) > (
+       SELECT 
+       avg(count i.invoice_id) as avg_counts 
+       from 
+       invoice i 
+       where i.billing_country = in.country
+);
